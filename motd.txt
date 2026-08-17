@@ -7,6 +7,13 @@ margin: 0 !important;
 }
 </style>
 </head>
-<body><img src="http://104.234.7.125:27036/96471557-ecbc-4ed6-8622-5b982fc0543d/left4dead2/motd.png" width="100%">
+<body><img src="<html>
+<head>
+    <title>MOTD NICESV</title>
+</head>
+<body>
+    <img src="https://matiasboy289-sketch.github.io/fastdl-l4d2/motd.png" width="100%">
+</body>
+</html>" width="100%">
 
 </body></html>
