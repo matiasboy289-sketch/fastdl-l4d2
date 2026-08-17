@@ -1,0 +1,12 @@
+<html><head>
+<title>MOTD NICESV</title>
+<style>
+{
+padding: 0 !important;
+margin: 0 !important;
+}
+</style>
+</head>
+<body><img src="http://104.234.7.125:27036/96471557-ecbc-4ed6-8622-5b982fc0543d/left4dead2/motd.png" width="100%">
+
+</body></html>
