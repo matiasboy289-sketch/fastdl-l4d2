@@ -1,19 +1,26 @@
-<html><head>
-<title>MOTD NICESV</title>
-<style>
-{
-padding: 0 !important;
-margin: 0 !important;
-}
-</style>
-</head>
-<body><img src="<html>
+<html>
 <head>
     <title>MOTD NICESV</title>
+    <style>
+        * {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+    </style>
 </head>
+
 <body>
     <img src="https://matiasboy289-sketch.github.io/fastdl-l4d2/motd.png" width="100%">
 </body>
-</html>" width="100%">
-
-</body></html>
+</html>
