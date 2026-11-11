@@ -173,6 +173,7 @@ footer:before{content:"";display:block;position:absolute;top:0;left:-30%;width:2
 <script>
 const SERVER_IP="38.7.197.74", SERVER_PORT="25579";
 const API="https://gsm.kuryzhev.cloud/api/search";
+const STATUS_PAGE="https://moddingcommunity.com/nl/l4d2/s/38.7.197.74%3A25579";
 const $=id=>document.getElementById(id);
 const mapLabels={
  c1:"NO MERCY",c2:"CRASH COURSE",c3:"DEATH TOLL",c4:"DEAD AIR",c5:"BLOOD HARVEST",
@@ -190,6 +191,9 @@ function setBackground(map){
  if(key.startsWith("c13")||key.startsWith("c14"))palette="radial-gradient(ellipse at 70% 30%,rgba(91,115,139,.45),transparent 42%),linear-gradient(120deg,#101720,#283747 55%,#10131a)";
  $("scene").style.background=palette;$("mapArt").style.background=`linear-gradient(140deg,rgba(8,12,17,.22),rgba(5,8,12,.88)),${palette}`;
 }
+function showUnlisted(){
+ $("status").className="status";$("statusText").textContent="MONITOR SIN VINCULAR";$("players").innerHTML="-- <small>/ 30</small>";$("stateValue").textContent="Sin datos del monitor";$("mapName").textContent="CONSULTA EXTERNA";$("campaignName").textContent="El servidor está registrado en un monitor externo";$("mapDetail").textContent="Datos no disponibles en el monitor integrado";$("updated").innerHTML='El monitor actual no contiene esta IP. <a href="'+STATUS_PAGE+'" target="_blank" rel="noopener" style="color:#ff8b72">Ver estado del servidor</a>';
+}
 function showOffline(message){
  $("status").className="status offline";$("statusText").textContent="SIN RESPUESTA";$("players").innerHTML="-- <small>/ --</small>";$("stateValue").textContent="No detectado";
  $("mapName").textContent="SIN DATOS";$("campaignName").textContent="No se pudo confirmar el mapa";$("mapDetail").textContent="Servidor no localizado";$("updated").textContent=message||"El monitor aún no entrega datos para esta IP.";
@@ -202,7 +206,7 @@ async function updateStatus(){
   const data=await response.json();
   const items=Array.isArray(data.results)?data.results:[];
   const server=items.find(s=>String(s.ip)===SERVER_IP && String(s.port)===SERVER_PORT && s.game_id==="l4d2");
-  if(!server){showOffline("Servidor todavía no aparece en el monitor público. Comprueba que esté listado y que el puerto de consulta esté accesible.");return;}
+  if(!server){showUnlisted();return;}
   const online=server.online===true;
   $("status").className="status "+(online?"online":"offline");
   $("statusText").textContent=online?"SERVIDOR ONLINE":"SERVIDOR OFFLINE";
