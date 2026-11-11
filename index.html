@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090d12">
+<title>NICE SV | Left 4 Dead 2</title>
+<style>
+:root{--red:#ef3434;--orange:#ff8b45;--ink:#090d12;--muted:#aab3bd;--panel:rgba(10,15,21,.78);--line:rgba(255,255,255,.13)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#080c11;color:#f4f6f8;font-family:Inter,Segoe UI,Arial,sans-serif;overflow-x:hidden}
+#scene{position:fixed;inset:0;z-index:-3;background:radial-gradient(ellipse at 72% 35%,rgba(130,35,24,.42),transparent 42%),linear-gradient(115deg,#101b24 0%,#15151a 48%,#260f10 100%);transition:background 1s ease}
+#scene:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,7,10,.91),rgba(4,7,10,.43) 55%,rgba(4,7,10,.72)),radial-gradient(ellipse at 50% 100%,transparent 20%,#05080d 95%)}
+#scene:after{content:"";position:absolute;inset:0;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E")}
+.fog{position:fixed;z-index:-2;inset:-20%;pointer-events:none;background:radial-gradient(ellipse,rgba(170,180,190,.09),transparent 60%);filter:blur(30px);animation:drift 18s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(8%,5%) scale(1.15)}}
+.embers{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}.ember{position:absolute;bottom:-20px;width:3px;height:3px;border-radius:50%;background:#ff7548;box-shadow:0 0 12px 3px #ff4d2d;animation:rise linear infinite;opacity:.65}
+@keyframes rise{to{transform:translateY(-110vh) translateX(60px);opacity:0}}
+header{max-width:1180px;margin:auto;padding:25px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:13px;font-weight:900;letter-spacing:2px}.logo{width:42px;height:42px;border:1px solid rgba(255,255,255,.25);display:grid;place-items:center;background:linear-gradient(145deg,#ed3434,#6f1117);clip-path:polygon(0 0,100% 0,100% 78%,78% 100%,0 100%);font-size:20px}
+.brand small{display:block;color:#aeb7c1;font-size:9px;letter-spacing:3px;margin-top:4px}
+nav{display:flex;gap:24px}nav a{color:#d2d7dc;text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase}nav a:hover{color:#ff6b52}
+main{max-width:1180px;margin:auto;padding:35px 28px 70px}
+.eyebrow{color:#ff7059;font-size:11px;letter-spacing:4px;text-transform:uppercase;font-weight:800;display:flex;align-items:center;gap:10px}.eyebrow:before{content:"";width:28px;height:1px;background:#ff7059}
+h1{font-size:clamp(44px,8vw,88px);line-height:.92;letter-spacing:-4px;margin:22px 0 18px;text-transform:uppercase;font-weight:950;max-width:800px;text-shadow:0 8px 40px #000}
+h1 span{color:#ef3939}.intro{color:#c0c7ce;max-width:520px;line-height:1.7;font-size:15px}
+.hero{min-height:410px;display:flex;flex-direction:column;justify-content:center;padding:28px 0 52px}
+.server-card{position:relative;max-width:900px;background:linear-gradient(125deg,rgba(15,22,29,.91),rgba(18,18,22,.78));border:1px solid var(--line);box-shadow:0 25px 90px rgba(0,0,0,.4);backdrop-filter:blur(16px);padding:26px;overflow:hidden}
+.server-card:before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(#ff4b3e,#8f171d)}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.server-name{font-size:20px;font-weight:900;letter-spacing:1px}.status{display:flex;align-items:center;gap:9px;padding:8px 12px;border:1px solid var(--line);border-radius:3px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#d6dde3}.dot{width:8px;height:8px;border-radius:50%;background:#89919a;box-shadow:0 0 12px currentColor}.status.online .dot{background:#54e18b;color:#54e18b}.status.offline .dot{background:#ff5353;color:#ff5353}
+.server-info{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;margin-top:24px}.info{padding:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.07)}.label{font-size:9px;color:#8e9aa5;letter-spacing:2px;text-transform:uppercase}.value{font-size:22px;font-weight:800;margin-top:8px}.value small{font-size:12px;color:#9da8b2;font-weight:500}
+.iprow{margin-top:17px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.ip{font-family:Consolas,monospace;color:#f1f3f5;font-size:14px;letter-spacing:1px}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border:0;padding:12px 17px;background:#ed3434;color:white;font-weight:900;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:.2s}.btn:hover{background:#ff594b;transform:translateY(-2px)}.btn.secondary{background:rgba(255,255,255,.08);border:1px solid var(--line);color:#e8edf1}
+.map-panel{margin-top:24px;display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:stretch}.map-art{min-height:230px;position:relative;overflow:hidden;border:1px solid var(--line);background:linear-gradient(140deg,rgba(8,12,17,.25),rgba(5,8,12,.88)),radial-gradient(ellipse at 70% 25%,rgba(181,63,36,.55),transparent 42%),linear-gradient(125deg,#29333a,#10161d 58%,#451a18);display:flex;align-items:end;padding:24px}
+.map-art:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.75),transparent 65%),repeating-linear-gradient(110deg,transparent 0 60px,rgba(255,255,255,.025) 61px 62px)}
+.map-art:after{content:"";position:absolute;width:220px;height:220px;border:1px solid rgba(255,255,255,.12);border-radius:50%;right:-40px;top:-75px;box-shadow:0 0 0 25px rgba(255,255,255,.025),0 0 0 55px rgba(255,255,255,.02)}
+.map-copy{position:relative;z-index:1}.map-copy .label{color:#ff8b72}.map-copy h2{font-size:30px;margin:8px 0 0;text-transform:uppercase}.map-copy p{margin:6px 0 0;color:#c3cbd2;font-size:12px}
+.map-side{padding:22px;background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:space-between}.map-side h3{margin:10px 0;font-size:19px}.map-side p{color:#aeb8c1;font-size:12px;line-height:1.7}.refresh{color:#87939e;font-size:10px;margin-top:16px}
+.section-title{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#ff7059;margin:65px 0 18px}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.feature{border:1px solid var(--line);background:rgba(10,15,21,.65);padding:22px;min-height:125px}.feature b{font-size:13px;letter-spacing:1px}.feature p{font-size:12px;color:#aeb8c1;line-height:1.6}
+footer{border-top:1px solid var(--line);padding:24px 28px;color:#7f8b96;font-size:10px;letter-spacing:1px;text-align:center}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);background:#19232b;border:1px solid var(--line);padding:12px 18px;font-size:12px;opacity:0;transition:.25s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:700px){header{padding:18px 18px}nav{display:none}main{padding:24px 18px 50px}.hero{min-height:350px}h1{letter-spacing:-2px}.server-card{padding:19px}.server-info{grid-template-columns:1fr 1fr}.server-info .info:first-child{grid-column:1/-1}.map-panel{grid-template-columns:1fr}.features{grid-template-columns:1fr}.map-art{min-height:190px}}
+
+/* ===== NICE SV: FULL ANIMATION UPGRADE ===== */
+:root{--pulse-red:#ff343d;--electric:#ff684f}
+body{isolation:isolate}
+#scene{
+  background-size:220% 220%;
+  animation:apocalypseFlow 22s ease-in-out infinite alternate, scenePulse 8s ease-in-out infinite;
+}
+@keyframes apocalypseFlow{
+  0%{background-position:0% 30%;filter:hue-rotate(0deg) brightness(.82)}
+  50%{background-position:100% 60%;filter:hue-rotate(-8deg) brightness(1.08)}
+  100%{background-position:25% 100%;filter:hue-rotate(8deg) brightness(.9)}
+}
+@keyframes scenePulse{0%,100%{opacity:1}50%{opacity:.88}}
+body:after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.17;
+  background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.035) 4px,transparent 5px);
+  animation:scanMove 12s linear infinite;
+}
+@keyframes scanMove{from{transform:translateY(-20px)}to{transform:translateY(20px)}}
+.fog{background:radial-gradient(ellipse at 25% 60%,rgba(255,75,50,.16),transparent 34%),radial-gradient(ellipse at 80% 20%,rgba(100,145,165,.12),transparent 38%);animation:fogStorm 16s ease-in-out infinite alternate}
+@keyframes fogStorm{0%{transform:translate(-5%,3%) scale(1);opacity:.5}100%{transform:translate(7%,-4%) scale(1.3);opacity:1}}
+.ember{width:4px;height:4px;animation-name:rise,emberFlicker;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite}
+@keyframes emberFlicker{0%,100%{filter:brightness(.6)}50%{filter:brightness(1.8)}}
+.brand{animation:brandReveal 1s ease both}
+.logo{position:relative;animation:logoPulse 3s ease-in-out infinite;box-shadow:0 0 22px rgba(239,52,52,.3)}
+.logo:after{content:"";position:absolute;inset:-5px;border:1px solid rgba(255,90,75,.5);animation:logoRing 3s ease-out infinite}
+@keyframes logoPulse{0%,100%{filter:brightness(1);transform:translateY(0)}50%{filter:brightness(1.35);transform:translateY(-2px)}}
+@keyframes logoRing{0%{transform:scale(.85);opacity:.8}100%{transform:scale(1.55);opacity:0}}
+@keyframes brandReveal{from{opacity:0;transform:translateX(-20px);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
+.eyebrow{animation:slideIn .8s .15s both}
+h1{animation:titleDrop 1.1s .25s cubic-bezier(.2,.8,.2,1) both}
+h1 span{
+ display:inline-block;background:linear-gradient(90deg,#ff343d,#ffb05c,#ff343d,#fff0e9);
+ background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+ animation:fireText 4s linear infinite,wordFloat 3.5s ease-in-out infinite;
+ filter:drop-shadow(0 0 18px rgba(255,55,55,.32));
+}
+@keyframes fireText{to{background-position:300% center}}
+@keyframes wordFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes titleDrop{from{opacity:0;transform:translateY(35px) skewY(2deg);filter:blur(9px)}to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+.intro{animation:fadeUp .9s .55s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.server-card{animation:cardArrival 1s .35s both;transition:transform .35s,border-color .35s,box-shadow .35s}
+.server-card:hover{transform:translateY(-5px);border-color:rgba(255,90,75,.45);box-shadow:0 30px 100px rgba(0,0,0,.5),0 0 35px rgba(239,52,52,.12)}
+.server-card:after{content:"";position:absolute;top:-70%;left:-45%;width:25%;height:240%;transform:rotate(25deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);animation:cardShine 8s ease-in-out infinite;pointer-events:none}
+@keyframes cardArrival{from{opacity:0;transform:translateY(28px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes cardShine{0%,65%{left:-50%}100%{left:140%}}
+.server-name{animation:nameGlow 3s ease-in-out infinite}
+@keyframes nameGlow{0%,100%{text-shadow:0 0 0 rgba(255,60,60,0)}50%{text-shadow:0 0 17px rgba(255,65,65,.35)}}
+.status{transition:all .3s}.status.online{border-color:rgba(84,225,139,.45);box-shadow:0 0 20px rgba(84,225,139,.1)}
+.status.online .dot{animation:onlinePulse 1.5s ease-in-out infinite}
+.status.offline .dot{animation:offlinePulse 1.2s ease-in-out infinite}
+@keyframes onlinePulse{50%{box-shadow:0 0 0 7px rgba(84,225,139,.08),0 0 18px #54e18b}}
+@keyframes offlinePulse{50%{box-shadow:0 0 0 7px rgba(255,83,83,.09),0 0 18px #ff5353}}
+.info{transition:transform .3s,border-color .3s,background .3s}
+.info:hover{transform:translateY(-4px);border-color:rgba(255,100,80,.4);background:rgba(255,70,60,.07)}
+.value{animation:valueIn .6s ease both;text-shadow:0 0 18px rgba(255,255,255,.12)}
+@keyframes valueIn{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+.btn{position:relative;overflow:hidden}.btn:after{content:"";position:absolute;top:-50%;left:-80%;width:45%;height:200%;transform:rotate(25deg);background:rgba(255,255,255,.22);transition:left .55s}
+.btn:hover:after{left:140%}
+.map-art{isolation:isolate;transition:filter .6s,background 1s}
+.map-art:before{animation:mapAtmosphere 13s ease-in-out infinite alternate}
+@keyframes mapAtmosphere{from{transform:scale(1) translateX(-1%);opacity:.65}to{transform:scale(1.12) translateX(2%);opacity:1}}
+.map-art:after{animation:radarRing 7s ease-out infinite}
+@keyframes radarRing{0%{transform:scale(.8);opacity:.65}100%{transform:scale(1.35);opacity:0}}
+.map-copy h2{animation:mapTitle 1s ease both;text-shadow:0 0 22px rgba(255,90,65,.3)}
+@keyframes mapTitle{from{opacity:0;letter-spacing:8px}to{opacity:1;letter-spacing:0}}
+.map-side{transition:border-color .3s}.map-side:hover{border-color:rgba(255,90,75,.35)}
+.feature{transition:transform .35s,border-color .35s,background .35s;animation:fadeUp .8s both}
+.feature:nth-child(2){animation-delay:.12s}.feature:nth-child(3){animation-delay:.24s}
+.feature:hover{transform:translateY(-7px);border-color:rgba(255,90,75,.4);background:rgba(35,19,20,.8)}
+.feature b{transition:color .3s}.feature:hover b{color:#ff8069}
+.section-title{animation:sectionBlink 4s ease-in-out infinite}
+@keyframes sectionBlink{0%,100%{text-shadow:none}50%{text-shadow:0 0 15px rgba(255,80,65,.45)}}
+footer{position:relative;overflow:hidden}
+footer:before{content:"";display:block;position:absolute;top:0;left:-30%;width:25%;height:1px;background:#ff5748;box-shadow:0 0 15px #ff5748;animation:footerLaser 6s linear infinite}
+@keyframes footerLaser{to{left:110%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+<div id="scene"></div><div class="fog"></div><div class="embers" id="embers"></div>
+<header>
+  <div class="brand"><div class="logo">N</div><div>NICE SV<small>LEFT 4 DEAD 2 • CHILE</small></div></div>
+  <nav><a href="#server">Servidor</a><a href="#mapa">Mapa actual</a><a href="mapas.html">Mapas custom</a><a href="#comunidad">Comunidad</a></nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="eyebrow">Santiago, Chile · LATAM</div>
+    <h1>Survive.<br><span>Fight.</span> Repeat.</h1>
+    <p class="intro">La infección no espera. Entra a NICE SV y demuestra que puedes sobrevivir. Servidor de Left 4 Dead 2 con ambiente competitivo y comunidad LATAM.</p>
+  </section>
+
+  <section id="server" class="server-card">
+    <div class="card-top">
+      <div class="server-name">NICE SV <span style="color:#ef4545">|</span> L4D2 COMPETITIVE</div>
+      <div id="status" class="status"><i class="dot"></i><span id="statusText">CONSULTANDO SERVIDOR</span></div>
+    </div>
+    <div class="server-info">
+      <div class="info"><div class="label">Jugadores conectados</div><div class="value" id="players">-- <small>/ --</small></div></div>
+      <div class="info"><div class="label">Estado</div><div class="value" id="stateValue">Consultando</div></div>
+      <div class="info"><div class="label">Juego</div><div class="value">LEFT 4 DEAD 2</div></div>
+    </div>
+    <div class="iprow">
+      <div><div class="label">IP DE CONEXIÓN</div><div class="ip">38.7.197.74:25579</div></div>
+      <div class="actions">
+        <button class="btn" onclick="copyIP()">Copiar IP</button>
+        <a class="btn secondary" href="steam://connect/38.7.197.74:25579">Conectar al servidor</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="mapa" class="map-panel">
+    <div class="map-art" id="mapArt"><div class="map-copy"><div class="label">EN JUEGO AHORA</div><h2 id="mapName">Esperando datos...</h2><p id="campaignName">Mapa actual del servidor</p></div></div>
+    <div class="map-side">
+      <div><div class="label">INFORMACIÓN DE PARTIDA</div><h3 id="mapDetail">Detectando mapa</h3><p>El mapa y la cantidad de jugadores se actualizan automáticamente cuando el monitor encuentra tu servidor.</p></div>
+      <div class="refresh" id="updated">Última consulta: esperando...</div>
+    </div>
+  </section>
+
+  <div class="section-title" id="comunidad">PREPÁRATE PARA LA INFECCIÓN</div>
+  <section class="features">
+    <div class="feature"><b>01 / CONEXIÓN LATAM</b><p>Servidor alojado en Chile, pensado para jugadores de Latinoamérica.</p></div>
+    <div class="feature"><b>02 / ACCESO DIRECTO</b><p>Copia la IP o pulsa conectar para abrir Left 4 Dead 2 directamente.</p></div>
+    <div class="feature"><b>03 / ESTADO EN VIVO</b><p>Consulta jugadores, disponibilidad y mapa detectado por el servicio de monitoreo.</p></div>
+  </section>
+</main>
+<footer>NICE SV © 2026 · LEFT 4 DEAD 2 · HOSTING CHILE / SANTIAGO · <a href="mapas.html" style="color:#ff7059;text-decoration:none">MAPAS CUSTOM</a></footer>
+<div class="toast" id="toast">IP copiada al portapapeles</div>
+<script>
+const SERVER_IP="38.7.197.74", SERVER_PORT="25579";
+const API="https://gsm.kuryzhev.cloud/api/search";
+const $=id=>document.getElementById(id);
+const mapLabels={
+ c1:"NO MERCY",c2:"CRASH COURSE",c3:"DEATH TOLL",c4:"DEAD AIR",c5:"BLOOD HARVEST",
+ c6:"THE SACRIFICE",c7:"THE PASSING",c8:"DEAD CENTER",c9:"THE PASSING",c10:"DARK CARNIVAL",
+ c11:"SWAMP FEVER",c12:"HARD RAIN",c13:"THE PARISH",c14:"COLD STREAM"
+};
+function campaign(map){if(!map)return "Campaña no disponible";let key=map.match(/^c\d+/i);return key?(mapLabels[key[0].toLowerCase()]||"LEFT 4 DEAD 2"):"LEFT 4 DEAD 2";}
+function setBackground(map){
+ const key=(map||"").toLowerCase();
+ let palette="radial-gradient(ellipse at 72% 35%,rgba(130,35,24,.42),transparent 42%),linear-gradient(115deg,#101b24 0%,#15151a 48%,#260f10 100%)";
+ if(key.startsWith("c1")||key.startsWith("c2"))palette="radial-gradient(ellipse at 70% 25%,rgba(74,95,105,.45),transparent 42%),linear-gradient(120deg,#111a22,#26343a 55%,#101318)";
+ if(key.startsWith("c3")||key.startsWith("c4")||key.startsWith("c5"))palette="radial-gradient(ellipse at 70% 30%,rgba(105,115,73,.35),transparent 42%),linear-gradient(120deg,#111914,#343a2c 55%,#10130f)";
+ if(key.startsWith("c8")||key.startsWith("c10"))palette="radial-gradient(ellipse at 70% 30%,rgba(155,58,38,.5),transparent 42%),linear-gradient(120deg,#15131a,#42201e 55%,#101015)";
+ if(key.startsWith("c11")||key.startsWith("c12"))palette="radial-gradient(ellipse at 70% 30%,rgba(66,112,93,.4),transparent 42%),linear-gradient(120deg,#0d1918,#263b36 55%,#101613)";
+ if(key.startsWith("c13")||key.startsWith("c14"))palette="radial-gradient(ellipse at 70% 30%,rgba(91,115,139,.45),transparent 42%),linear-gradient(120deg,#101720,#283747 55%,#10131a)";
+ $("scene").style.background=palette;$("mapArt").style.background=`linear-gradient(140deg,rgba(8,12,17,.22),rgba(5,8,12,.88)),${palette}`;
+}
+function showOffline(message){
+ $("status").className="status offline";$("statusText").textContent="SIN RESPUESTA";$("players").innerHTML="-- <small>/ --</small>";$("stateValue").textContent="No detectado";
+ $("mapName").textContent="SIN DATOS";$("campaignName").textContent="No se pudo confirmar el mapa";$("mapDetail").textContent="Servidor no localizado";$("updated").textContent=message||"El monitor aún no entrega datos para esta IP.";
+}
+async function updateStatus(){
+ try{
+  const url=API+"?q="+encodeURIComponent(SERVER_IP+":"+SERVER_PORT)+"&limit=20";
+  const response=await fetch(url,{cache:"no-store"});
+  if(!response.ok)throw new Error("API HTTP "+response.status);
+  const data=await response.json();
+  const items=Array.isArray(data.results)?data.results:[];
+  const server=items.find(s=>String(s.ip)===SERVER_IP && String(s.port)===SERVER_PORT && s.game_id==="l4d2");
+  if(!server){showOffline("Servidor todavía no aparece en el monitor público. Comprueba que esté listado y que el puerto de consulta esté accesible.");return;}
+  const online=server.online===true;
+  $("status").className="status "+(online?"online":"offline");
+  $("statusText").textContent=online?"SERVIDOR ONLINE":"SERVIDOR OFFLINE";
+  $("stateValue").textContent=online?"En línea":"Desconectado";
+  $("players").innerHTML=(server.players??0)+" <small>/ "+(server.max_players??"--")+"</small>";
+  const map=server.map_name||"Mapa no disponible";
+  $("mapName").textContent=map.replaceAll("_"," ").toUpperCase();
+  $("campaignName").textContent=campaign(server.map_name);
+  $("mapDetail").textContent=online?"Partida activa · "+campaign(server.map_name):"Sin partida activa";
+  setBackground(server.map_name);
+  const checked=server.checked_at?new Date(server.checked_at).toLocaleString("es-CL"):"ahora";
+  $("updated").textContent="Datos del monitor: "+checked+" · actualización automática cada 60 s";
+ }catch(error){
+  showOffline("No se pudo conectar con el servicio de estado. Se reintentará automáticamente.");
+  console.warn(error);
+ }
+}
+function copyIP(){
+ const value=SERVER_IP+":"+SERVER_PORT;
+ if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(value).then(()=>toast()).catch(()=>fallbackCopy(value));}
+ else fallbackCopy(value);
+}
+function fallbackCopy(value){const el=document.createElement("textarea");el.value=value;document.body.appendChild(el);el.select();document.execCommand("copy");el.remove();toast();}
+function toast(){$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1800);}
+const embers=$("embers");for(let i=0;i<55;i++){const e=document.createElement("i");e.className="ember";e.style.left=Math.random()*100+"%";e.style.animationDuration=(8+Math.random()*13)+"s";e.style.animationDelay=(-Math.random()*18)+"s";e.style.opacity=(.2+Math.random()*.65);embers.appendChild(e);}
+updateStatus();setInterval(updateStatus,60000);
+</script>
+</body>
+</html>
